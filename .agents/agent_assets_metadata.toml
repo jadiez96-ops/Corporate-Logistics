@@ -1,0 +1,26 @@
+uploads = []
+outputs = []
+
+[[generated]]
+id = "G6haMJ_CtwPDNcadM-gO9"
+uri = "file://artifacts/ectsa-website/public/hero-bg.png"
+type = "image"
+title = "Logistics trucks on highway at dusk"
+
+[[generated]]
+id = "qg06PhXx3R_qBHZTxZVUN"
+uri = "file://artifacts/ectsa-website/public/warehouse-bg.png"
+type = "image"
+title = "Warehouse operations cross docking"
+
+[[generated]]
+id = "kh4xCHjJhG1axm1G9X3mF"
+uri = "file://artifacts/ectsa-website/public/fleet-bg.png"
+type = "image"
+title = "Fleet cargo operations"
+
+[[generated]]
+id = "AI7C8mXXTH4tE6vDb5MVH"
+uri = "file://artifacts/ectsa-website/public/tech-bg.png"
+type = "image"
+title = "GPS tracking dashboard high tech"

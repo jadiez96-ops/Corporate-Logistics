@@ -1,0 +1,31 @@
+kind = "web"
+previewPath = "/"
+title = "ECTSA Logistics"
+version = "1.0.0"
+id = "artifacts/ectsa-website"
+router = "path"
+
+[[integratedSkills]]
+name = "react-vite"
+version = "1.0.0"
+
+[[services]]
+name = "web"
+paths = [ "/" ]
+localPort = 18352
+
+[services.development]
+run = "pnpm --filter @workspace/ectsa-website run dev"
+
+[services.production]
+build = [ "pnpm", "--filter", "@workspace/ectsa-website", "run", "build" ]
+publicDir = "artifacts/ectsa-website/dist/public"
+serve = "static"
+
+[[services.production.rewrites]]
+from = "/*"
+to = "/index.html"
+
+[services.env]
+PORT = "18352"
+BASE_PATH = "/"

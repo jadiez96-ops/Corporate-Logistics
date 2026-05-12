@@ -1,0 +1,479 @@
+# ECTSA Corporate Logistics Website (Python + Flask)
+
+## Project Structure
+
+```bash
+ectsa-website/
+│
+├── app.py
+├── requirements.txt
+├── static/
+│   ├── css/
+│   │   └── style.css
+│   └── images/
+│       ├── hero.jpg
+│       ├── trucks.jpg
+│       ├── warehouse.jpg
+│       ├── logistics.jpg
+│       └── tracking.jpg
+│
+├── templates/
+│   └── index.html
+│
+└── README.md
+```
+
+---
+
+# 1. app.py
+
+```python
+from flask import Flask, render_template
+
+app = Flask(__name__)
+
+@app.route('/')
+def home():
+    return render_template('index.html')
+
+if __name__ == '__main__':
+    app.run(debug=True)
+```
+
+---
+
+# 2. requirements.txt
+
+```txt
+Flask==3.0.3
+```
+
+---
+
+# 3. templates/index.html
+
+```html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ECTSA Logistics</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;600;700&display=swap" rel="stylesheet">
+
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+
+    <header class="hero">
+        <nav>
+            <div class="logo">ECTSA</div>
+            <ul>
+                <li><a href="#about">About</a></li>
+                <li><a href="#services">Services</a></li>
+                <li><a href="#technology">Technology</a></li>
+                <li><a href="#contact">Contact</a></li>
+            </ul>
+        </nav>
+
+        <div class="hero-content">
+            <h1>Reliable Logistics Solutions Across Panama</h1>
+            <p>Over 28 years of experience in transportation, distribution, and dry cargo logistics.</p>
+            <a href="#contact" class="btn">Request a Quote</a>
+        </div>
+    </header>
+
+    <section id="about" class="section">
+        <div class="container">
+            <h2>About ECTSA</h2>
+            <div class="about-grid">
+                <div>
+                    <p>
+                        ECTSA – Empresa Coclesana de Transporte, S.A. is a Panamanian logistics company with extensive experience in transportation, dry cargo distribution, and supply chain operations nationwide.
+                    </p>
+
+                    <p>
+                        Through innovation, operational efficiency, and continuous improvement, ECTSA has evolved into a fully logistics-focused company serving businesses with reliable and scalable transportation solutions.
+                    </p>
+                </div>
+
+                <img src="{{ url_for('static', filename='images/trucks.jpg') }}" alt="ECTSA Fleet">
+            </div>
+        </div>
+    </section>
+
+    <section id="services" class="section dark-section">
+        <div class="container">
+            <h2>Our Services</h2>
+
+            <div class="cards">
+                <div class="card">
+                    <h3>National Dry Cargo Transportation</h3>
+                    <p>Reliable cargo transportation across Panama.</p>
+                </div>
+
+                <div class="card">
+                    <h3>Distribution & Logistics</h3>
+                    <p>Efficient logistics operations tailored to your business.</p>
+                </div>
+
+                <div class="card">
+                    <h3>Cross Docking</h3>
+                    <p>Optimized delivery times and reduced storage costs.</p>
+                </div>
+
+                <div class="card">
+                    <h3>Fleet Operations</h3>
+                    <p>Professional drivers and fully managed logistics fleet.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="technology" class="section">
+        <div class="container">
+            <h2>Technology & Tracking</h2>
+
+            <div class="about-grid">
+                <img src="{{ url_for('static', filename='images/tracking.jpg') }}" alt="Tracking System">
+
+                <div>
+                    <p>
+                        ECTSA integrates modern technological tools for efficient B2B communication and real-time delivery monitoring.
+                    </p>
+
+                    <ul>
+                        <li>GPS Tracking</li>
+                        <li>Delivery Monitoring</li>
+                        <li>Operational Transparency</li>
+                        <li>Digital Logistics Coordination</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="stats">
+        <div class="stat-box">
+            <h2>28+</h2>
+            <p>Years of Experience</p>
+        </div>
+
+        <div class="stat-box">
+            <h2>Nationwide</h2>
+            <p>Coverage</p>
+        </div>
+
+        <div class="stat-box">
+            <h2>24/7</h2>
+            <p>Operations Support</p>
+        </div>
+    </section>
+
+    <section id="contact" class="section dark-section">
+        <div class="container">
+            <h2>Contact Us</h2>
+
+            <div class="contact-box">
+                <p>Email: info@ectsa.com</p>
+                <p>Phone: +507 6704-2577</p>
+                <p>Panama City & Nationwide Operations</p>
+            </div>
+        </div>
+    </section>
+
+    <footer>
+        <p>© 2026 ECTSA – Empresa Coclesana de Transporte, S.A.</p>
+    </footer>
+
+</body>
+</html>
+```
+
+---
+
+# 4. static/css/style.css
+
+```css
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Montserrat', sans-serif;
+    color: #222;
+    line-height: 1.6;
+}
+
+.hero {
+    background: linear-gradient(rgba(0,0,0,0.6), rgba(0,0,0,0.6)),
+    url('../images/hero.jpg');
+    background-size: cover;
+    background-position: center;
+    height: 100vh;
+    color: white;
+}
+
+nav {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 25px 60px;
+}
+
+nav ul {
+    display: flex;
+    list-style: none;
+    gap: 30px;
+}
+
+nav a {
+    text-decoration: none;
+    color: white;
+    font-weight: 600;
+}
+
+.logo {
+    font-size: 30px;
+    font-weight: 700;
+}
+
+.hero-content {
+    height: 80vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    padding: 20px;
+}
+
+.hero-content h1 {
+    font-size: 60px;
+    max-width: 900px;
+}
+
+.hero-content p {
+    margin-top: 20px;
+    font-size: 22px;
+    max-width: 700px;
+}
+
+.btn {
+    margin-top: 30px;
+    padding: 15px 35px;
+    background: #ff7a00;
+    color: white;
+    text-decoration: none;
+    border-radius: 8px;
+    font-weight: bold;
+}
+
+.section {
+    padding: 100px 60px;
+}
+
+.container {
+    max-width: 1200px;
+    margin: auto;
+}
+
+.section h2 {
+    font-size: 42px;
+    margin-bottom: 40px;
+}
+
+.about-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 50px;
+    align-items: center;
+}
+
+.about-grid img {
+    width: 100%;
+    border-radius: 12px;
+}
+
+.cards {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 25px;
+}
+
+.card {
+    background: white;
+    padding: 35px;
+    border-radius: 12px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+}
+
+.dark-section {
+    background: #0e1b2c;
+    color: white;
+}
+
+.stats {
+    display: flex;
+    justify-content: center;
+    gap: 60px;
+    padding: 80px 20px;
+    background: #f4f4f4;
+}
+
+.stat-box {
+    text-align: center;
+}
+
+.stat-box h2 {
+    font-size: 48px;
+    color: #ff7a00;
+}
+
+.contact-box {
+    font-size: 20px;
+    line-height: 2;
+}
+
+footer {
+    background: #09111d;
+    color: white;
+    text-align: center;
+    padding: 30px;
+}
+
+@media(max-width: 900px) {
+
+    .hero-content h1 {
+        font-size: 42px;
+    }
+
+    .about-grid {
+        grid-template-columns: 1fr;
+    }
+
+    nav {
+        flex-direction: column;
+        gap: 20px;
+    }
+
+    .stats {
+        flex-direction: column;
+    }
+}
+```
+
+---
+
+# 5. Professional Image Suggestions
+
+Download professional logistics images from:
+
+* [https://unsplash.com](https://unsplash.com)
+* [https://pexels.com](https://pexels.com)
+
+Suggested searches:
+
+* logistics trucks
+* cargo transport
+* warehouse operations
+* trucking company
+* logistics dashboard
+
+Rename the downloaded images as:
+
+* hero.jpg
+* trucks.jpg
+* warehouse.jpg
+* logistics.jpg
+* tracking.jpg
+
+and place them inside:
+
+```bash
+static/images/
+```
+
+---
+
+# 6. README.md
+
+````md
+# ECTSA Logistics Website
+
+Professional logistics website built with Python and Flask.
+
+## Installation
+
+```bash
+pip install -r requirements.txt
+````
+
+## Run the Project
+
+```bash
+python app.py
+```
+
+Open:
+
+[http://127.0.0.1:5000](http://127.0.0.1:5000)
+
+## Export to GitHub
+
+Initialize git:
+
+```bash
+git init
+```
+
+Add files:
+
+```bash
+git add .
+```
+
+Commit:
+
+```bash
+git commit -m "Initial ECTSA website"
+```
+
+Connect GitHub:
+
+```bash
+git remote add origin YOUR_GITHUB_REPOSITORY
+```
+
+Push:
+
+```bash
+git push -u origin main
+```
+
+```
+
+---
+
+# Recommended Next Upgrades
+
+You can later add:
+
+- Live GPS Tracking
+- Admin Dashboard
+- Client Login Portal
+- AI Delivery Assistant
+- WhatsApp API Integration
+- Online Quote System
+- Animated Statistics
+- Fleet Gallery
+- Google Maps Integration
+- Corporate PDF Brochure
+
+This structure already looks like a serious corporate logistics company and is ready for deployment to GitHub, Render, Railway, or VPS hosting.
+
+```
