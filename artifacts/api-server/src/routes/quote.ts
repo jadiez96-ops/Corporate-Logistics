@@ -18,14 +18,14 @@ router.post("/quote", async (req, res) => {
     port: 587,
     secure: false,
     auth: {
-      user: "ectsapanama@gmail.com",
+      user: "jadiez96@gmail.com",
       pass: appPassword,
     },
   });
 
   const mailOptions = {
-    from: '"ECTSA Website" <ectsapanama@gmail.com>',
-    to: "ectsapanama@gmail.com",
+    from: '"ECTSA Website" <jadiez96@gmail.com>',
+    to: "jadiez96@gmail.com",
     replyTo: email,
     subject: `Nueva Solicitud de Cotización – ${company || "Sin empresa"}`,
     html: `
