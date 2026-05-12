@@ -183,6 +183,8 @@ export default function Home() {
   const [isScrolled, setIsScrolled] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [lang, setLang] = useState<Lang>("es");
+  const [formData, setFormData] = useState({ company: "", contact: "", email: "", phone: "", requirements: "" });
+  const [formStatus, setFormStatus] = useState<"idle" | "sending" | "sent" | "error">("idle");
 
   const tx = t[lang];
 
@@ -199,6 +201,27 @@ export default function Home() {
   };
 
   const toggleLang = () => setLang(l => l === "en" ? "es" : "en");
+
+  const handleField = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+    setFormData(prev => ({ ...prev, [e.target.name]: e.target.value }));
+  };
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setFormStatus("sending");
+    try {
+      const res = await fetch("/api/quote", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(formData),
+      });
+      if (!res.ok) throw new Error("failed");
+      setFormStatus("sent");
+      setFormData({ company: "", contact: "", email: "", phone: "", requirements: "" });
+    } catch {
+      setFormStatus("error");
+    }
+  };
 
   return (
     <div className="min-h-[100dvh] bg-background text-foreground font-sans dark overflow-hidden selection:bg-primary selection:text-primary-foreground">
@@ -572,38 +595,56 @@ export default function Home() {
               className="bg-[#0e1b2c] p-8 md:p-12 text-white"
             >
               <h3 className="text-3xl font-black mb-8">{tx.formTitle}</h3>
-              <form className="space-y-6" onSubmit={(e) => e.preventDefault()} data-testid="contact-form">
-                <div className="grid md:grid-cols-2 gap-6">
-                  <div className="space-y-2">
-                    <label className="text-sm font-bold uppercase tracking-widest text-white/70">{tx.formCompany}</label>
-                    <input type="text" className="w-full bg-[#172a42] border-none text-white px-4 py-4 focus:ring-2 focus:ring-primary outline-none" placeholder={tx.formCompanyPh} data-testid="input-company" />
-                  </div>
-                  <div className="space-y-2">
-                    <label className="text-sm font-bold uppercase tracking-widest text-white/70">{tx.formContact}</label>
-                    <input type="text" className="w-full bg-[#172a42] border-none text-white px-4 py-4 focus:ring-2 focus:ring-primary outline-none" placeholder={tx.formContactPh} data-testid="input-contact" />
-                  </div>
-                </div>
 
-                <div className="grid md:grid-cols-2 gap-6">
-                  <div className="space-y-2">
-                    <label className="text-sm font-bold uppercase tracking-widest text-white/70">{tx.formEmail}</label>
-                    <input type="email" className="w-full bg-[#172a42] border-none text-white px-4 py-4 focus:ring-2 focus:ring-primary outline-none" placeholder={tx.formEmailPh} data-testid="input-email" />
-                  </div>
-                  <div className="space-y-2">
-                    <label className="text-sm font-bold uppercase tracking-widest text-white/70">{tx.formPhone}</label>
-                    <input type="tel" className="w-full bg-[#172a42] border-none text-white px-4 py-4 focus:ring-2 focus:ring-primary outline-none" placeholder={tx.formPhonePh} data-testid="input-phone" />
-                  </div>
+              {formStatus === "sent" ? (
+                <div className="flex flex-col items-center justify-center py-16 gap-4 text-center">
+                  <div className="w-16 h-16 bg-primary/20 rounded-full flex items-center justify-center text-primary text-3xl font-black">✓</div>
+                  <p className="text-xl font-bold text-white">{lang === "es" ? "¡Solicitud enviada!" : "Request sent!"}</p>
+                  <p className="text-white/60 text-sm">{lang === "es" ? "Nos pondremos en contacto pronto." : "We will get back to you shortly."}</p>
+                  <button onClick={() => setFormStatus("idle")} className="mt-4 border border-white/30 text-white px-6 py-2 text-sm font-bold uppercase tracking-widest hover:bg-white/10 transition-colors">
+                    {lang === "es" ? "Enviar otra" : "Send another"}
+                  </button>
                 </div>
+              ) : (
+                <form className="space-y-6" onSubmit={handleSubmit} data-testid="contact-form">
+                  <div className="grid md:grid-cols-2 gap-6">
+                    <div className="space-y-2">
+                      <label className="text-sm font-bold uppercase tracking-widest text-white/70">{tx.formCompany}</label>
+                      <input name="company" type="text" value={formData.company} onChange={handleField} className="w-full bg-[#172a42] border-none text-white px-4 py-4 focus:ring-2 focus:ring-primary outline-none" placeholder={tx.formCompanyPh} data-testid="input-company" />
+                    </div>
+                    <div className="space-y-2">
+                      <label className="text-sm font-bold uppercase tracking-widest text-white/70">{tx.formContact}</label>
+                      <input name="contact" type="text" value={formData.contact} onChange={handleField} className="w-full bg-[#172a42] border-none text-white px-4 py-4 focus:ring-2 focus:ring-primary outline-none" placeholder={tx.formContactPh} data-testid="input-contact" />
+                    </div>
+                  </div>
 
-                <div className="space-y-2">
-                  <label className="text-sm font-bold uppercase tracking-widest text-white/70">{tx.formReqs}</label>
-                  <textarea rows={4} className="w-full bg-[#172a42] border-none text-white px-4 py-4 focus:ring-2 focus:ring-primary outline-none resize-none" placeholder={tx.formReqsPh} data-testid="input-requirements"></textarea>
-                </div>
+                  <div className="grid md:grid-cols-2 gap-6">
+                    <div className="space-y-2">
+                      <label className="text-sm font-bold uppercase tracking-widest text-white/70">{tx.formEmail}</label>
+                      <input name="email" type="email" value={formData.email} onChange={handleField} className="w-full bg-[#172a42] border-none text-white px-4 py-4 focus:ring-2 focus:ring-primary outline-none" placeholder={tx.formEmailPh} data-testid="input-email" />
+                    </div>
+                    <div className="space-y-2">
+                      <label className="text-sm font-bold uppercase tracking-widest text-white/70">{tx.formPhone}</label>
+                      <input name="phone" type="tel" value={formData.phone} onChange={handleField} className="w-full bg-[#172a42] border-none text-white px-4 py-4 focus:ring-2 focus:ring-primary outline-none" placeholder={tx.formPhonePh} data-testid="input-phone" />
+                    </div>
+                  </div>
 
-                <button type="submit" className="w-full bg-primary text-white font-black uppercase tracking-widest py-5 hover:bg-red-700 transition-colors" data-testid="submit-quote">
-                  {tx.formSubmit}
-                </button>
-              </form>
+                  <div className="space-y-2">
+                    <label className="text-sm font-bold uppercase tracking-widest text-white/70">{tx.formReqs}</label>
+                    <textarea name="requirements" rows={4} value={formData.requirements} onChange={handleField} className="w-full bg-[#172a42] border-none text-white px-4 py-4 focus:ring-2 focus:ring-primary outline-none resize-none" placeholder={tx.formReqsPh} data-testid="input-requirements"></textarea>
+                  </div>
+
+                  {formStatus === "error" && (
+                    <p className="text-red-400 text-sm font-bold">
+                      {lang === "es" ? "Error al enviar. Intente de nuevo." : "Failed to send. Please try again."}
+                    </p>
+                  )}
+
+                  <button type="submit" disabled={formStatus === "sending"} className="w-full bg-primary text-white font-black uppercase tracking-widest py-5 hover:bg-red-700 transition-colors disabled:opacity-60 disabled:cursor-not-allowed" data-testid="submit-quote">
+                    {formStatus === "sending" ? (lang === "es" ? "Enviando..." : "Sending...") : tx.formSubmit}
+                  </button>
+                </form>
+              )}
             </motion.div>
 
           </div>
