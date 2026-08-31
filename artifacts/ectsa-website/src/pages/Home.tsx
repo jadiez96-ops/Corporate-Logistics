@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { motion } from "framer-motion";
+import { motion, type Variants } from "framer-motion";
 import { 
   Truck, 
   Package, 
@@ -22,12 +22,12 @@ import {
 } from "lucide-react";
 import logoPath from "@/assets/ectsa-logo.png";
 
-const fadeInUp = {
+const fadeInUp: Variants = {
   hidden: { opacity: 0, y: 40 },
   visible: { opacity: 1, y: 0, transition: { duration: 0.6, ease: "easeOut" } }
 };
 
-const staggerContainer = {
+const staggerContainer: Variants = {
   hidden: { opacity: 0 },
   visible: { opacity: 1, transition: { staggerChildren: 0.1 } }
 };
@@ -116,14 +116,14 @@ const t = {
     heroTitle1: "SOLUCIONES",
     heroTitle2: "LOGÍSTICAS",
     heroTitle3: "CONFIABLES EN PANAMÁ",
-    heroSub: "Más de 28 años de experiencia en transporte, distribución y logística de carga seca. La columna vertebral del movimiento de mercancías en Panamá.",
+    heroSub: "Más de 28 años de experiencia en transporte, distribución y logística de carga seca. El progreso de un país viene de parte de la inversión privada.",
     heroCta: "Solicitar Cotización",
     heroSecondary: "Ver Servicios",
     statYears: "Años de Experiencia",
     statCoverage: "Cobertura Nacional",
     statOps: "Soporte Operativo",
     aboutTag: "Acerca de ECTSA",
-    aboutTitle: "LA COLUMNA VERTEBRAL LOGÍSTICA DE LA ECONOMÍA",
+    aboutTitle: "LA COLUMNA VERTEBRAL DE LA ECONOMÍA ES LA LOGÍSTICA",
     aboutP1: "Somos una empresa panameña de logística con amplia experiencia en transporte, distribución de carga seca y operaciones de cadena de suministro a nivel nacional.",
     aboutP2: "A través de la innovación, la eficiencia operativa y la mejora continua, ECTSA se ha convertido en una empresa plenamente orientada a la logística. No solo movemos carga; optimizamos toda su red de distribución.",
     aboutReliability: "Confiabilidad Comprobada",
