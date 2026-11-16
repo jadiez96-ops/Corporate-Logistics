@@ -1,5 +1,13 @@
-import { createRoot } from "react-dom/client";
+import { createRoot, hydrateRoot } from "react-dom/client";
 import App from "./App";
 import "./index.css";
 
-createRoot(document.getElementById("root")!).render(<App />);
+const container = document.getElementById("root")!;
+
+// In production the HTML is prerendered (see scripts/prerender.mjs), so we
+// hydrate it; in development the root is empty and we render normally.
+if (container.firstElementChild) {
+  hydrateRoot(container, <App />);
+} else {
+  createRoot(container).render(<App />);
+}
